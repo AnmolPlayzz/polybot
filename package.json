@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "chalk": "^4.1.0",
     "discord.js": "^14.11.0",
     "dotenv": "^16.0.3"
   }

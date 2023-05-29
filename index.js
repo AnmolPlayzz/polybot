@@ -4,7 +4,14 @@ const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ 
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
+ });
+
+module.exports ={
+	client
+}
+
 client.commands = new Collection();
 
 const foldersPath = path.join(__dirname, 'commands');
@@ -38,5 +45,24 @@ for (const file of eventFiles) {
 	}
 }
 
+client.on(Events.InteractionCreate, async interaction => {
+	if (interaction.isChatInputCommand()) {
+		const command = client.commands.get(interaction.commandName);
+		if (!command) return;
+
+		try {
+			await command.execute(interaction, client);
+		} catch (error) {
+			console.error(error);
+			if (interaction.replied || interaction.deferred) {
+				await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			} else {
+				await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			}
+		}
+	} else if(interaction.isStringSelectMenu()) {
+		//
+	}
+});
 
 client.login(token)
