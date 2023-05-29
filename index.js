@@ -1,4 +1,5 @@
 require('dotenv').config();
+const keepAlive = require('./server.js');
 const token = process.env.TOKEN;
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
@@ -66,3 +67,4 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.login(token)
+keepAlive();
