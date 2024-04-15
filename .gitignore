@@ -1,3 +1,4 @@
 /node_modules
+/.obsidian
 package-lock.json
 .env

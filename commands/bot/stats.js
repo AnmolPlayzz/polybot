@@ -16,7 +16,7 @@ module.exports = {
 		const uptime = `\`\`\`${days}d ${hours}hrs ${minutes}mins ${seconds}secs \`\`\``;
         const stats = new EmbedBuilder()
             .setColor(0xff9c63)
-            .setAuthor({ name: 'Stats', iconURL: 'https://cdn.discordapp.com/attachments/1112672152433475604/1112672217738793010/Untitled3-1024x1024.png'})
+            .setAuthor({ name: 'Stats', iconURL: 'https://i.postimg.cc/jdHmnDSj/Untitled3-1024x1024.png'})
 			.addFields(
 				{ name: "Servers:", value: `\`\`\`${client.guilds.cache.size}\`\`\``, inline: true },
 				{ name: "Users:", value: `\`\`\`${client.users.cache.size}\`\`\``, inline: true },

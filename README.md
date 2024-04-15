@@ -1,6 +1,6 @@
-# Art of Dragons Discord Bot
+# PolyBot
 
-Art of Dragons is an open-source Discord bot made using Discord.js v14. It is designed to bring fun and utility to your Discord server.
+PolyBot is an open-source Discord bot made using Discord.js v14. It is designed to bring fun and utility to your Discord server.
 
 ## Table of Contents
 
@@ -12,17 +12,66 @@ Art of Dragons is an open-source Discord bot made using Discord.js v14. It is de
 
 ## Features
 
-- **/help**: Get a list of available commands and their descriptions.
-- **/ping**: Check the bot's latency and responsiveness.
-- **/stats**: View statistics about the bot, such as uptime and server count.
-
+- [ ] Basics
+   - [ ] Info
+      - [x] Serverinfo
+      - [x] Userinfo
+      - [x] Roleinfo
+      - [x] List role
+      - [ ] Channel Info
+      - [ ] Emoji + Sticker Info
+      - [ ] Activity Graph: display server activity graph, kinda like statbot
+   - [x] Bot
+      - [x] Ping
+      - [x] Stats
+      - [x] Help
+   - [ ] Welcome and Goodbye, maybe with a image
+- [ ] Leveling // multi server
+   - [ ] Rank
+   - [ ] Leaderboard
+   - [ ] alter cmds: add/remove rank/xp
+- [ ] Silly
+   - [ ] Hug
+   - [ ] Slap
+   - [ ] Murder
+   - [ ] Compliment
+   - [ ] Choke
+   - [ ] Spray (https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-tiktok-gif-25591053)
+   - [ ] Random meme
+   - [ ] Random capypasta
+   - [ ] mOcK \(right click/context menu)
+   - [ ] Fun fact
+   - [ ] Randomly reply to users with weird shi
+- [ ] Image - generate images from user input
+   - [ ] Bubble
+   - [ ] Meme template - make memes using templates and text (`!memeify image_url top_text bottom_text`)
+   - [ ] convert user msges to quote
+   - [ ] /hat : give users a hat
+- [ ] Utility
+   - [ ] Unit conversion
+   - [ ] calculator w/ buttons
+   - [ ] weather
+   - [ ] Currency conversion
+   - [ ] Dictionary
+   - [ ] Web SS
+   - [ ] Torrent search
+- [ ] Social alerts \[for self hosted bots]
+   - [ ] YouTube
+   - [ ] Instagram
+- [ ] Game
+   - [ ] Tic Tac Toe
+   - [ ] WYR
+   - [ ] **Battleship:** Players take turns guessing the location of their opponent's ships on a hidden grid. You can use emoji or custom reactions to represent the grid and ship placements.
+   - [ ] Truth and Dare
+   - [ ] **Guess the Number:** The bot thinks of a number, and users react with numbers trying to guess it. The bot can provide hints like "higher" or "lower" based on the guesses.
+   - [ ] Rock Paper Scissors
+     
+  
 The bot is a work in progress, and more features are being added regularly.
-
-Apologies for the oversight. Here's the updated version including the intents step and instructions on how to invite the bot:
 
 ## Installation
 
-To run the Art of Dragons Discord bot on your own server, follow these steps:
+To run the PolyBot Discord bot on your own server, follow these steps:
 
 1. Clone the repository:
 
@@ -40,7 +89,7 @@ To run the Art of Dragons Discord bot on your own server, follow these steps:
 
    - Visit the [Discord Developer Portal](https://discord.com/developers) and log in with your Discord account.
    - Click on the "New Application" button located at the top right corner of the Developer Portal. This will create a new application that will serve as the foundation for your Discord bot.
-   - Enter a name for your application in the provided field. You can choose any name that represents your bot, such as "Art of Dragons Bot."
+   - Enter a name for your application in the provided field. You can choose any name that represents your bot.
    - Once you have entered a name, click on the "Create" button to create your application. You will be redirected to the application's settings page.
    - In the left sidebar of the application settings page, locate and select the "Bot" tab. This tab contains settings specifically related to your bot.
    - Click on the "Add Bot" button to create a bot for your application. This will enable you to assign a unique bot token to your bot, which is necessary for it to connect to Discord's API.
@@ -65,7 +114,7 @@ Make sure you have Node.js (v16 or higher) and npm installed on your machine.
 
 ## Usage
 
-To use the Art of Dragons Discord bot, you need to invite it to your server. Here's how:
+To use the PolyBot Discord bot, you need to invite it to your server. Here's how:
 
 1. Visit the [Discord Developer Portal](https://discord.com/developers) and navigate to your bot's application settings.
 2. In the left sidebar, select the "OAuth2" tab.
@@ -77,7 +126,7 @@ To use the Art of Dragons Discord bot, you need to invite it to your server. Her
 
 ## Contributing
 
-Contributions to Art of Dragons are always welcome. If you have any ideas, bug reports, or feature requests, please open an issue on the GitHub repository.
+Contributions to PolyBot are always welcome. If you have any ideas, bug reports, or feature requests, please open an issue on the GitHub repository.
 
 To contribute code to the project, follow these steps:
 
@@ -92,4 +141,4 @@ Please ensure that your code adheres to the project's coding conventions and inc
 
 ## License
 
-Art of Dragons is licensed under the [MIT License](LICENSE). Feel free to modify and distribute the code according to the terms of the license.
+PolyBot is licensed under the [MIT License](LICENSE). Feel free to modify and distribute the code according to the terms of the license.
