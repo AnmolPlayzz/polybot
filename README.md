@@ -18,8 +18,7 @@ PolyBot is an open-source Discord bot made using Discord.js v14. It is designed 
       - [x] Userinfo
       - [x] Roleinfo
       - [x] List role
-      - [ ] Channel Info
-      - [ ] Emoji + Sticker Info
+      - [x] Channel Info
       - [ ] Activity Graph: display server activity graph, kinda like statbot
    - [x] Bot
       - [x] Ping
@@ -141,4 +140,4 @@ Please ensure that your code adheres to the project's coding conventions and inc
 
 ## License
 
-PolyBot is licensed under the [MIT License](LICENSE). Feel free to modify and distribute the code according to the terms of the license.
+PolyBot is licensed under the [GNU GPL v3 License](LICENSE). 

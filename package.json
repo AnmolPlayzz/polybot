@@ -6,12 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "commonjs",
   "author": "",
   "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.0",
     "discord.js": "^14.14.1",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "quickchart-js": "^3.1.3"
   }
 }

@@ -9,7 +9,7 @@ module.exports = {
         const home = new EmbedBuilder()
             .setColor(0x2B2D31)
             .setAuthor({ name: 'Welcome to the Help menu!', iconURL: 'https://i.postimg.cc/BZxMMd9Y/help-author.png'})
-            .setDescription('## Navigation\nUse the select menu to navigate through the menu.\n## Notations\n`[input]`: indicated the input field for a command.\n`[input]*`: indicates a field which is required.\n## Contributing\nIf you\'d like to report an issue or help make the bot better, head over to the [GitHub repo](https://github.com/AnmolPlayzz/art-of-dragons-2.0).\n## Website and Docs\nWill be made soon™')
+            .setDescription('## Navigation\nUse the select menu to navigate through the menu.\n## Notations\n`[input]`: indicated the input field for a command.\n`[input]*`: indicates a field which is required.\n## Contributing\nIf you\'d like to report an issue or help make the bot better, head over to the [GitHub repo](https://github.com/AnmolPlayzz/polybot).\n## Website and Docs\nWill be made soon™')
             .setTimestamp()
 			.setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
         const bot = new EmbedBuilder()
@@ -21,10 +21,9 @@ module.exports = {
         const info = new EmbedBuilder()
             .setColor(0xf78b43)
             .setAuthor({ name: 'Info Commands', iconURL: 'https://i.postimg.cc/wBxrkt2T/help-info-author.png'})
-            .setDescription("`/serverinfo`: Returns information about this server.\n`/userinfo [user]`: Returns information about a user.\n`/roleinfo [role]*`: Returns information about a role.\n`/rolelist`: Returns a list of all the roles in this server.")
+            .setDescription("`/serverinfo`: Returns information about this server.\n`/userinfo [user]`: Returns information about a user.\n`/roleinfo [role]*`: Returns information about a role.\n`/rolelist`: Returns a list of all the roles in this server.\n`/channelinfo [channel]*`: Returns information about a channel.\n`/graph [channel]`: Returns a line chart representing the activty of a channel over the past 7 days.")
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
-
 
         //---------[  SELECT MENUS  ]------------
         const mainnav = new StringSelectMenuBuilder()
