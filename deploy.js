@@ -7,6 +7,7 @@ const guildIds = guildIdL.split(",")
 const token = process.env.TOKEN;
 const fs = require('node:fs');
 const path = require('node:path');
+const {mongo_client, connectDB } = require("./mongodb-helper");
 const commands = [];
 // Grab all the command files from the commands directory you created earlier
 const foldersPath = path.join(__dirname, 'commands');
@@ -50,7 +51,7 @@ if (global_state==="0") {
 				// And of course, make sure you catch and log any errors!
 				console.error(error);
 			}
-		})();
+		})()
 	})
 } else {
 	(async () => {
@@ -69,5 +70,5 @@ if (global_state==="0") {
 			// And of course, make sure you catch and log any errors!
 			console.error(error);
 		}
-	})();
+	})()
 }

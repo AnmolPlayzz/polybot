@@ -12,19 +12,20 @@ PolyBot is an open-source Discord bot made using Discord.js v14. It is designed 
 
 ## Features
 
-- [ ] Basics
-   - [ ] Info
+- [x] Basics
+   - [x] Info
       - [x] Serverinfo
       - [x] Userinfo
       - [x] Roleinfo
       - [x] List role
       - [x] Channel Info
-      - [ ] Activity Graph: display server activity graph, kinda like statbot
+      - [x] Activity Graph: display server activity graph, kinda like statbot
    - [x] Bot
       - [x] Ping
       - [x] Stats
       - [x] Help
-   - [ ] Welcome and Goodbye, maybe with a image
+   - [x] Welcome and Goodbye, maybe with a image
+   - [x] AutoRoles
 - [ ] Leveling // multi server
    - [ ] Rank
    - [ ] Leaderboard

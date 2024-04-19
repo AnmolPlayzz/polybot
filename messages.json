@@ -1,0 +1,27 @@
+{
+  "leaveMsg": [
+    "{user} left the server!",
+    "{user} has flown the coop!",
+    "{user} bid us farewell. Farewell, {user}!",
+    "We say goodbye to {user} today. Until next time!",
+    "{user} *poof*  Just vanished!",
+    "{user} is signing off. See you around!",
+    "Wishing {user} all the best in their future endeavors!",
+    "{user} has decided to move on to greener pastures.",
+    "{user} has logged off for the final time. Thanks for the memories!",
+    "Farewell, {user}. May your days be filled with epic wins (elsewhere).",
+    "{user} has muted their mic permanently. We'll miss you!",
+    "The server feels a little quieter without {user}. Hope to see you again sometime!",
+    "{user} has escaped the chat! Good luck out there!",
+    "Looks like {user} found the exit. Don't be a stranger!",
+    "{user} is on a quest... We'll be waiting for your triumphant return!",
+    "{user} has left the building.",
+    "Member {user}, has tragically left the server!",
+    "{user} went. baiii~! :3 x3",
+    "{user} got caught and was grounded for life!",
+    "{user} went to go touch grass!",
+    "{user} is now more than AFK",
+    "404 {user} not found",
+    "{user} disconnected from your channel!"
+  ]
+}

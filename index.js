@@ -1,9 +1,11 @@
 require('dotenv').config();
 const keepAlive = require('./server.js');
+const { connectFireBase } = require('./mongodb-helper.js')
 const token = process.env.TOKEN;
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
+const {connectDB} = require("./mongodb-helper");
 
 const client = new Client({ 
 	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers]
@@ -68,3 +70,4 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.login(token)
 keepAlive();
+connectDB();
