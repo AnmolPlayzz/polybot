@@ -76,7 +76,7 @@ To run the PolyBot Discord bot on your own server, follow these steps:
 1. Clone the repository:
 
     ```
-    git clone https://github.com/your-username/art-of-dragons.git
+    git clone https://github.com/anmolplayzz/polybot.git
     ```
 
 2. Install the required dependencies:
@@ -122,7 +122,7 @@ To use the PolyBot Discord bot, you need to invite it to your server. Here's how
 4. Upder "scopes" select "Bot" & "Application.Commands"
 4. In the "Bot Permissions" section, customize the permissions based on the features your bot requires. For example, if your bot needs the ability to send messages and read member information, enable the "Send Messages" and "Read Members" permissions.
 5. After selecting the desired permissions, a generated URL will appear in the "Generated URL" section. Click on the "Copy" button next to the URL to copy it to your clipboard.
-6. Open a web browser and paste the copied URL into the
+6. Open a web browser and paste the copied URL into the search bar. Now, proceed with inviting the bot.
 
 ## Contributing
 
