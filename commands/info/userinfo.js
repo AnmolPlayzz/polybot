@@ -22,7 +22,7 @@ module.exports = {
                 {name: "👥 Server Name", value: svname || target.username, inline: true},
                 {name: "📅 Created on", value: "<t:"+`${target.createdTimestamp}`.slice(0,10)+":D>", inline: true},
                 {name: "➕ Joined server on", value: "<t:"+`${svmember.joinedTimestamp}`.slice(0,10)+":D>", inline: true},
-                {name: "🤖 Use is bot", value: `${target.bot ? "Yes" : "No"}`, inline: true},
+                {name: "🤖 User is bot", value: `${target.bot ? "Yes" : "No"}`, inline: true},
                 {name: "🔱 Permissions [first 10]", value: `\`\`\`${svmember.permissions.toArray().slice(0,10).join(", ")}\`\`\``, inline: true}
             )
             .setTimestamp()

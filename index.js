@@ -1,6 +1,5 @@
 require('dotenv').config();
 const keepAlive = require('./server.js');
-const { connectFireBase } = require('./mongodb-helper.js')
 const token = process.env.TOKEN;
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const fs = require('node:fs');
@@ -70,4 +69,5 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.login(token)
 keepAlive();
-connectDB();
+connectDB()
+	.then(console.log("MongoDB connected!"))

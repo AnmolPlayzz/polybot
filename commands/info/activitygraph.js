@@ -21,11 +21,12 @@ module.exports = {
                 before: currentLastId
             })).forEach(e => messagesList.push(e))
             currentLastId = messagesList[0].id
-            while (Math.floor((await target.messages.fetch({
+            let nextMsgTs = Math.floor((await target.messages.fetch({
                 limit: 1,
-                cache: false,
+                cache: true,
                 before: currentLastId
-            })).at(0).createdTimestamp / 1000) > Math.floor(messagesList[0].createdTimestamp / 1000) - 691200) {
+            })).at(0).createdTimestamp / 1000)
+            while (nextMsgTs > Math.floor(messagesList[0].createdTimestamp / 1000) - 691200) {
                 let fetched = await target.messages.fetch({limit: 100, cache: false, before: currentLastId})
                 fetched.forEach(e => {
                     if (Math.floor(e.createdTimestamp / 1000) > Math.floor(messagesList[0].createdTimestamp / 1000) - 691200) {
@@ -33,6 +34,16 @@ module.exports = {
                     }
                 })
                 currentLastId = messagesList[messagesList.length - 1].id
+                const newData = await target.messages.fetch({
+                    limit: 1,
+                    cache: true,
+                    before: currentLastId
+                })
+                if (newData.size !== 0) {
+                    nextMsgTs = Math.floor(newData.at(0).createdTimestamp / 1000)
+                } else {
+                    nextMsgTs=null
+                }
             } //fetches all messages upto 1 week, this is not a piece of code I'm gonna try to explain at all
             //1 day = 86400000 ms
 
