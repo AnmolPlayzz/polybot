@@ -4,6 +4,11 @@ const { Events, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const { mongo_client } = require("../mongodb-helper.js");
 const Canvas = require("canvas");
 const fs = require("fs");
+//register fonts
+Canvas.registerFont("./fonts/roboto/Roboto-Bold.ttf", { family: 'Roboto-Bold' });
+Canvas.registerFont("./fonts/roboto/Roboto-Thin.ttf", { family: 'Roboto-Thin' });
+Canvas.registerFont("./fonts/roboto/Roboto-Light.ttf", { family: 'Roboto-Light' });
+
 module.exports = {
     name: Events.GuildMemberAdd,
     once: false,
@@ -21,10 +26,6 @@ module.exports = {
             const context = canvas.getContext('2d');
             const imageData = await fs.promises.readFile('images/events/welcome/welcome-base-image.png');
             const background = await Canvas.loadImage(imageData);
-            //register fonts
-            Canvas.registerFont("./fonts/roboto/Roboto-Bold.ttf", { family: 'Roboto-Bold' });
-            Canvas.registerFont("./fonts/roboto/Roboto-Thin.ttf", { family: 'Roboto-Thin' });
-            Canvas.registerFont("./fonts/roboto/Roboto-Light.ttf", { family: 'Roboto-Light' });
 
             context.drawImage(background, 0, 0, canvas.width, canvas.height);
 
@@ -39,7 +40,7 @@ module.exports = {
             context.fillText(userI.username.length > 30 ? userI.username.slice(0,27)+"..." : userI.username, 238.5, 297.5 );
 
             //text - membercount
-            context.font = "31.04px Roboto-Thin";
+            context.font = "31.04px Roboto-Light";
             context.fillStyle = '#ffffff';
             context.fillText(`#${guildI.memberCount}`, 278.5, 386.5);
 
@@ -53,8 +54,12 @@ module.exports = {
             context.drawImage(avatar, 549.53 , 223.66  , 171.5625 , 171.5625 );
 
             const attachment = new AttachmentBuilder(await canvas.toBuffer("image/png"), { name: 'welcome-image.png' });
-            const welcomeChannel = await guildI.channels.fetch(welcome)
-            welcomeChannel.send({content: `Welcome to the server <@!${userI.id}>!`, files: [attachment]}).catch(e => console.log(e))
+            try {
+                const welcomeChannel = await guildI.channels.fetch(welcome)
+                await welcomeChannel.send({content: `Welcome to the server <@!${userI.id}>!`, files: [attachment]})
+            } catch(e) {
+                console.log(e)
+            }
         }
 
         //---[ AutoRole ]---
@@ -64,10 +69,14 @@ module.exports = {
             const guildI = member.guild
             const roles = dataAutorole.roleList
             try {
-                roles.forEach(async e => {
-                    await member.roles.add(e)
-                })
-            } catch (e) {
+                for (const e of roles) {
+                    try {
+                        await member.roles.add(e)
+                    } catch(e) {
+                        console.log(e)
+                    }
+                }
+            } catch(e) {
                 console.log(e)
             }
         }

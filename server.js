@@ -1,6 +1,6 @@
 /*
 Before you ask me why do I listen for a port over here...
-This is so that Koyeb (my deployement serivce) marks my service as "healthy"
+This is so that Koyeb (my deployment service) marks my service as "healthy"
 moreover, its good for people using replit and glitch to host bots
 */
 const express = require('express');

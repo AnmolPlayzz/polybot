@@ -16,8 +16,8 @@ module.exports = {
             const userI = member.user
             const msg = randomMsg.replace("{user}",`<@!${userI.id}>`)
             const leave = data.leaveID
-            const leaveChannel = await guildI.channels.fetch(leave)
             try {
+                const leaveChannel = await guildI.channels.fetch(leave)
                 await leaveChannel.send(msg)
             } catch (e) {
                 console.log(e)
