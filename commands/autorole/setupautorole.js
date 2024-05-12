@@ -43,6 +43,10 @@ module.exports = {
                             }
                         }).map(e => e.id).reverse()
                         const roleListString = roleList.map(e => "- <@&"+e+">").join("\n")
+                        if (roleList.length === 0) {
+                            const second_rs = await i.editReply("No roles were selected. PolyBot filters the roles you select so it does not include any bot roles. If you're getting this it's likely that you only selected bot roles.")
+                            return;
+                        }
                         const roleConfEmbed = new EmbedBuilder()
                             .setAuthor({name: `Set Up autorole for ${interaction.guild.name}`})
                             .setDescription(`You're about to set up AutoRoles on this server with the following roles.\n\n${roleListString}\n\nAre you sure you want to continue?`)

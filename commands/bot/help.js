@@ -36,6 +36,21 @@ module.exports = {
             .setDescription("`/setup-autorole`: Set up autrole on this server.\n`/update-autorole`: Update the settings for autorole.\n`/disable-autorole`: Disable autorole.\n\n**Note:** You must have the `Manage Server` permission to run these commands.")
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
+        const rank = new EmbedBuilder()
+            .setColor(0xff4747)
+            .setAuthor({ name: 'Rank Commands', iconURL: 'https://i.postimg.cc/mDd3JQVW/help-rank-author.png'})
+            .setDescription("`/rank [target]`: Returns a user\'s rank.\n`/leaderboard`: Returns the leaderboard data of this server.")
+            .setTimestamp()
+            .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
+        const rankManager = new EmbedBuilder()
+            .setColor(0xff4747)
+            .setAuthor({ name: 'Rank manager Commands', iconURL: 'https://i.postimg.cc/pV5tWx5z/help-rank-manager-author-1.png'})
+            .setDescription("`/setup-rank`: Set up the rank module on this server.\n`/disable-rank`: Disable the rank module on this server.\n`/set-level [target]* [level]*`: Set the level for a user on this server.\n`/set-xp [target]* [xp]*`: Set the xp for a user on this server.\n\n**Note:** You must have the `Manage Server` permission to run these commands.")
+            .setTimestamp()
+            .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
+
+
+
         //---------[  SELECT MENUS  ]------------
         const mainnav = new StringSelectMenuBuilder()
 			.setCustomId('nav')
@@ -60,7 +75,15 @@ module.exports = {
                 new StringSelectMenuOptionBuilder()
                     .setLabel("AutoRole setup Commands")
                     .setDescription("Commands which configure autorole.")
-                    .setValue("autorole")
+                    .setValue("autorole"),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Rank Commands")
+                    .setDescription("Commands for the rank module.")
+                    .setValue("rank"),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Rank Manager Commands")
+                    .setDescription("Commands for managing the rank module.")
+                    .setValue("rank_manager")
             )
 
 
@@ -89,6 +112,12 @@ module.exports = {
                         await collector.resetTimer()
                     } else if (i.values[0]==="autorole") {
                         await i.update({embeds: [autorole], components: [mainrow], ephemeral: true});
+                        await collector.resetTimer()
+                    } else if (i.values[0]==="rank") {
+                        await i.update({embeds: [rank], components: [mainrow], ephemeral: true});
+                        await collector.resetTimer()
+                    } else if (i.values[0]==="rank_manager") {
+                        await i.update({embeds: [rankManager], components: [mainrow], ephemeral: true});
                         await collector.resetTimer()
                     }
                 }

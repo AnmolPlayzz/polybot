@@ -26,10 +26,10 @@ PolyBot is an open-source Discord bot made using Discord.js v14. It is designed 
       - [x] Help
    - [x] Welcome and Goodbye, maybe with a image
    - [x] AutoRoles
-- [ ] Leveling // multi server
-   - [ ] Rank
-   - [ ] Leaderboard
-   - [ ] alter cmds: add/remove rank/xp
+- [x] Leveling // multi server
+   - [x] Rank
+   - [x] Leaderboard
+   - [x] alter cmds: add/remove rank/xp
 - [ ] Silly
    - [ ] Hug
    - [ ] Slap

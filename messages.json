@@ -23,5 +23,20 @@
     "{user} is now more than AFK",
     "404 {user} not found",
     "{user} disconnected from your channel!"
+  ],
+  "lvlUpMsg": [
+    "{user} just reached level {level}. Great work!",
+    "{user} just reached level {level}. Keep up the good work!",
+    "{user} leveled up to {level}! You're on a roll!",
+    "**Level Up!** {user} is now level {level}.",
+    "{user} has achieved level {level}! ",
+    "Woah! {user} just hit level {level}. That's impressive!",
+    "{user} unlocked level {level}! What a legend!",
+    "Look out everyone, {user} just leveled up to {level}!",
+    "{user} promoted to level {level}. Time to celebrate! ",
+    "{user} is now a level {level} chatterbox! Keep talking!",
+    "New high score! {user} reached level {level}.",
+    "{user} graduated to level {level} in the School of NoLifers.",
+    "**Achievement Unlocked!** {user} is now level {level}."
   ]
 }

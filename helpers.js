@@ -12,21 +12,21 @@ color - color of embed
 interval - time after which menu is disabled
 */
 const pager = async (interaction, arr, brp, joiner, author_text, title, color=0x2b2d31,interval = 60_000) => {
-    page_list = []
+    let page_list = []
     for (let i=0;i<arr.length;i+=brp) {
         page_list.push(arr.slice(i,i+brp))
     }
 
-    page_list_embed = page_list.map(e => {
+    let page_list_embed = page_list.map(e => {
         let embed_template = new EmbedBuilder()
             .setColor(color)
             .setDescription(e.join(joiner))
-            .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
+            .setFooter({text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL()});
         author_text ? embed_template.setAuthor({name: author_text}) : ""
         title ? embed_template.setTitle(title) : ""
         return embed_template
     })
-    itr=0 //page number - iterator
+    let itr = 0 //page number - iterator
 
     const prev = new ButtonBuilder()
         .setCustomId('prev')
@@ -84,7 +84,7 @@ const pager = async (interaction, arr, brp, joiner, author_text, title, color=0x
             }
             collector.resetTimer()
         } else {
-            i.reply({ content: `These buttons aren't for you!`, ephemeral: true });
+            await i.reply({content: `These buttons aren't for you!`, ephemeral: true});
         }
     });
     collector.on("end", async i => {
@@ -96,4 +96,16 @@ const pager = async (interaction, arr, brp, joiner, author_text, title, color=0x
     })
 }
 
-module.exports.pager = pager
+function calculateXp(l){
+    return ((4/3)*l**3 + 32*l**2 + (842/3)*l ) //https://www.desmos.com/calculator/unnkwg9llt
+}
+
+function calculateLevel(x) {
+    const sqrt = Math.sqrt;
+    const level = -(((sqrt(3)*sqrt(243*x**2 + 427680*x + 188584424) - 27*x - 23760)**(1/3))/(2*3**(2/3))) + ((37)/(3**(1/3)*(sqrt(3)*sqrt(243*x**2 + 427680*x + 188584424) - 27*x - 23760)**(1/3))) - 8
+    return Math.floor(level) === -1 ? 0 : Math.floor(level)
+}
+
+module.exports.pager = pager;
+module.exports.calculateXp = calculateXp;
+module.exports.calculateLevel = calculateLevel;
