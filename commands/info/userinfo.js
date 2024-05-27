@@ -11,7 +11,6 @@ module.exports = {
     async execute(interaction, client) {
         const target = interaction.options.getUser('target')===null ? interaction.user : interaction.options.getUser('target')
         const svmember = await interaction.guild.members.fetch(`${target.id}`)
-        console.log(target)
         const svname = svmember.nickname || target.globalName
         const userinfo = new EmbedBuilder()
             .setTitle(`User Info for ${target.username}${svmember.user.discriminator!=="0" ? "#"+svmember.user.discriminator : ""}`)

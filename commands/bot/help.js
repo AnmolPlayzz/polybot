@@ -48,6 +48,12 @@ module.exports = {
             .setDescription("`/setup-rank`: Set up the rank module on this server.\n`/disable-rank`: Disable the rank module on this server.\n`/set-level [target]* [level]*`: Set the level for a user on this server.\n`/set-xp [target]* [xp]*`: Set the xp for a user on this server.\n\n**Note:** You must have the `Manage Server` permission to run these commands.")
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
+        const silly = new EmbedBuilder()
+            .setColor(0xff9500)
+            .setAuthor({ name: 'Silly Commands', iconURL: 'https://i.postimg.cc/PrWJQdTP/help-silly-author.png'})
+            .setDescription("`/hug [target]*`: Hug a user (with cute cat gifs :3).\n`/meme`: Get a random meme from reddit.\n`/copypasta`: Get a random copypasta from reddit.\n`/mock [text]*`: mOcK a given string. (Also available as **context menus**)")
+            .setTimestamp()
+            .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
 
 
 
@@ -83,7 +89,11 @@ module.exports = {
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Rank Manager Commands")
                     .setDescription("Commands for managing the rank module.")
-                    .setValue("rank_manager")
+                    .setValue("rank_manager"),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Silly Commands")
+                    .setDescription("Commands for getting a lil freaky 👅.")
+                    .setValue("silly")
             )
 
 
@@ -118,6 +128,9 @@ module.exports = {
                         await collector.resetTimer()
                     } else if (i.values[0]==="rank_manager") {
                         await i.update({embeds: [rankManager], components: [mainrow], ephemeral: true});
+                        await collector.resetTimer()
+                    } else if (i.values[0]==="silly") {
+                        await i.update({embeds: [silly], components: [mainrow], ephemeral: true});
                         await collector.resetTimer()
                     }
                 }

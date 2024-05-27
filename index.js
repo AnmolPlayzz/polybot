@@ -1,7 +1,7 @@
 require('dotenv').config();
 const keepAlive = require('./server.js');
 const token = process.env.TOKEN;
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, ContextMenuCommandBuilder, ApplicationCommandType  } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 const {connectDB} = require("./mongodb-helper");
@@ -62,8 +62,20 @@ client.on(Events.InteractionCreate, async interaction => {
 				await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 			}
 		}
-	} else if(interaction.isStringSelectMenu()) {
-		//
+	} else if(interaction.isContextMenuCommand()) {
+		const command = client.commands.get(interaction.commandName);
+		if (!command) return;
+
+		try {
+			await command.execute(interaction, client);
+		} catch (error) {
+			console.error(error);
+			if (interaction.replied || interaction.deferred) {
+				await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			} else {
+				await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			}
+		}
 	}
 });
 

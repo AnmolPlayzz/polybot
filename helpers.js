@@ -106,6 +106,11 @@ function calculateLevel(x) {
     return Math.floor(level) === -1 ? 0 : Math.floor(level)
 }
 
+function selectRandom(arr) {
+    return arr[Math.round(Math.random()*arr.length)]
+}
+
 module.exports.pager = pager;
 module.exports.calculateXp = calculateXp;
 module.exports.calculateLevel = calculateLevel;
+module.exports.selectRandom = selectRandom;

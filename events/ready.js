@@ -21,10 +21,10 @@ module.exports = {
             .setAuthor({ name: 'Bot Bootup successfull!', iconURL: 'https://i.postimg.cc/jdHmnDSj/Untitled3-1024x1024.png'})
 			.addFields(
 				{ name: "Servers:", value: `\`\`\`${client.guilds.cache.size}\`\`\``, inline: true },
-				{ name: "Users:", value: `\`\`\`${client.users.cache.size}\`\`\``, inline: true },
+				{ name: "Users:", value: `\`\`\`${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}\`\`\``, inline: true },
 				{ name: "Channels",value: `\`\`\`${client.channels.cache.size}\`\`\``, inline: true },
 				{ name: "Uptime: ", value: uptime , inline: true },
-				{ name: "Ping:",value: `\`\`\`${Math.round(client.ws.ping)} ms\`\`\``, inline: true },
+				{ name: "Ping:",value: `\`\`\`${client.ws.ping} ms\`\`\``, inline: true },
 				{ name: "RAM: ", value: `\`\`\`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\`\`\``, inline: true  },
 				{ name: "Node.js Version", value: `\`\`\`${(process.version)}\`\`\``, inline: true },
 				{ name: "Operating System", value: `\`\`\`${(process.platform)}\`\`\``, inline: true },
