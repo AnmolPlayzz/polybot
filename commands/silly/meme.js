@@ -9,12 +9,12 @@ module.exports = {
     async execute(interaction, client) {
         const subs=["memes","shitposting","dankmemes"]
         async function fetchData(){
+            const res = await fetch('https://www.reddit.com/r/copypasta/random/.json')
             try {
-                const sub = selectRandom(subs)
-                const res = await fetch(`https://www.reddit.com/r/${sub}/random/.json`.toString())
                 return await res.json()
             } catch(e) {
                 console.log("Metwork error:\n", e)
+                console.log(res)
                 return;
             }
         }
