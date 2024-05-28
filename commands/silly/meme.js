@@ -9,9 +9,14 @@ module.exports = {
     async execute(interaction, client) {
         const subs=["memes","shitposting","dankmemes"]
         async function fetchData(){
-            const sub = selectRandom(subs)
-            const res = await fetch(`https://www.reddit.com/r/${sub}/random/.json`.toString())
-            return await res.json()
+            try {
+                const sub = selectRandom(subs)
+                const res = await fetch(`https://www.reddit.com/r/${sub}/random/.json`.toString())
+                return await res.json()
+            } catch(e) {
+                console.log("Metwork error:\n", e)
+                return;
+            }
         }
 
         let nsfwAlert  = new EmbedBuilder()
