@@ -9,8 +9,8 @@ module.exports = {
         .setDescription('Get a random meme from reddit.'),
     async execute(interaction, client) {
         const subs=["memes","shitposting","dankmemes"]
+        const sub = selectRandom(subs)
         async function fetchData(){
-            const sub = selectRandom(subs)
             try {
                 return await r.getSubreddit(sub).getHot({
                     limit: 100
@@ -72,7 +72,6 @@ module.exports = {
                     nextCollector.on("collect", async res => {
                         if(res.customId==="meme_next") {
                             await res.deferUpdate({content: "fetching", embeds: [], components: []})
-                            const requestData = await fetchData()
                             let request = selectRandom(requestData)
                             while(request.domain==='v.redd.it') {
                                 request=selectRandom(requestData)
