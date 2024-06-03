@@ -2,6 +2,7 @@ const { ModalBuilder, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, Chann
 const { mongo_client } = require("../../mongodb-helper")
 const fetch = require('node-fetch');
 const { selectRandom } = require("../../helpers")
+const {r} = require("../../reddit-helper");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('meme')
@@ -9,12 +10,11 @@ module.exports = {
     async execute(interaction, client) {
         const subs=["memes","shitposting","dankmemes"]
         async function fetchData(){
-            const res = await fetch('https://www.reddit.com/r/copypasta/random/.json')
+            const sub = selectRandom(subs)
             try {
-                return await res.json()
+                return await r.getSubreddit(sub).getRandomSubmission();
             } catch(e) {
                 console.log("Metwork error:\n", e)
-                console.log(res)
                 return;
             }
         }
@@ -45,18 +45,19 @@ module.exports = {
                     collector.stop("user-confirmed")
                     await i.update({content: "Fetching...", embeds: [], components: []})
                     let request = await fetchData()
-                    while(request.at(0).data.children.at(0).data.url.includes("v.redd.it")) {
+                    while(request.domain==='v.redd.it') {
                         request=await fetchData()
                     }
-                    const reqText = request.at(0).data.children.at(0).data.title;
+
+                    const reqText = request.title;
                     const finalText = reqText.length + 1<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
                     const responseEmbed = new EmbedBuilder()
-                        .setAuthor({name: `View Full Post`, url: request.at(0).data.children.at(0).data.url})
+                        .setAuthor({name: `View Full Post`, url: request.url})
                         .setDescription(finalText ? finalText : " ")
                         .setColor(0x2b2d31)
-                        .setImage(request.at(0).data.children.at(0).data.url)
+                        .setImage(request.url)
                         .setTimestamp()
-                        .setFooter({text: `👍 ${request.at(0).data.children.at(0).data.score}`});
+                        .setFooter({text: `👍 ${request.score}`});
                     let next = new ButtonBuilder()
                         .setCustomId('meme_next')
                         .setLabel('Next')
@@ -69,18 +70,19 @@ module.exports = {
                         if(res.customId==="meme_next") {
                             await res.deferUpdate({content: "fetching", embeds: [], components: []})
                             let request = await fetchData()
-                            while(request.at(0).data.children.at(0).data.url.includes("v.redd.it")) {
+                            while(request.domain==='v.redd.it') {
                                 request=await fetchData()
                             }
-                            const reqText = request.at(0).data.children.at(0).data.title;
+
+                            const reqText = request.title;
                             const finalText = reqText.length + 1<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
                             const responseEmbed = new EmbedBuilder()
-                                .setAuthor({name: `View Full Post`, url: request.at(0).data.children.at(0).data.url})
+                                .setAuthor({name: `View Full Post`, url: request.url})
                                 .setDescription(finalText ? finalText : " ")
                                 .setColor(0x2b2d31)
-                                .setImage(request.at(0).data.children.at(0).data.url)
+                                .setImage(request.url)
                                 .setTimestamp()
-                                .setFooter({text: `👍 ${request.at(0).data.children.at(0).data.score}`});
+                                .setFooter({text: `👍 ${request.score}`});
                             await res.editReply({content: "", embeds: [responseEmbed], components: [row] })
                             nextCollector.resetTimer()
                         }

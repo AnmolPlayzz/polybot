@@ -1,6 +1,7 @@
 const { ModalBuilder, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ChannelSelectMenuBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, Events, ComponentType,ButtonBuilder, ButtonStyle } = require('discord.js');
 const { mongo_client } = require("../../mongodb-helper")
-const fetch = require('node-fetch');
+const snoowrap = require('snoowrap');
+const {r} = require("../../reddit-helper")
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('copypasta')
@@ -8,12 +9,10 @@ module.exports = {
     async execute(interaction, client) {
 
         async function fetchData(){
-            const res = await fetch('https://www.reddit.com/r/copypasta/random/.json')
             try {
-                return await res.json()
+                return await r.getSubreddit('copypasta').getRandomSubmission();
             } catch(e) {
                 console.log("Metwork error:\n", e)
-                console.log(res)
                 return;
             }
         }
@@ -44,15 +43,15 @@ module.exports = {
                     collector.stop("user-confirmed")
                     await i.update({content: "Fetching...", embeds: [], components: []})
                     const request = await fetchData()
-                    const reqText = request.at(0).data.children.at(0).data.selftext;
+                    const reqText = request.selftext;
                     const finalText = reqText.length<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
 
                     const responseEmbed = new EmbedBuilder()
-                        .setAuthor({name: `View Full Post`, url: request.at(0).data.children.at(0).data.url})
+                        .setAuthor({name: `View Full Post`, url: request.url})
                         .setDescription(finalText.length===0 ? "__no text__" : finalText)
                         .setColor(0x2b2d31)
                         .setTimestamp()
-                        .setFooter({text: `👍 ${request.at(0).data.children.at(0).data.score}`});
+                        .setFooter({text: `👍 ${request.score}`});
 
 
                     let next = new ButtonBuilder()
@@ -67,14 +66,14 @@ module.exports = {
                         if(res.customId==="copypasta_next") {
                             await res.deferUpdate()
                             const request = await fetchData()
-                            const reqText = request.at(0).data.children.at(0).data.selftext;
+                            const reqText = request.selftext;
                             const finalText = reqText.length<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
                             const responseEmbed = new EmbedBuilder()
-                                .setAuthor({name: `View Full Post`, url: request.at(0).data.children.at(0).data.url})
+                                .setAuthor({name: `View Full Post`, url: request.url})
                                 .setDescription(finalText.length===0 ? "__no text__" : finalText)
                                 .setColor(0x2b2d31)
                                 .setTimestamp()
-                                .setFooter({text: `👍 ${request.at(0).data.children.at(0).data.score}`});
+                                .setFooter({text: `👍 ${request.score}`});
                             await res.editReply({content: "", embeds: [responseEmbed], components: [row] })
                             nextCollector.resetTimer()
                         }
