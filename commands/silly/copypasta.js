@@ -2,6 +2,7 @@ const { ModalBuilder, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, Chann
 const { mongo_client } = require("../../mongodb-helper")
 const snoowrap = require('snoowrap');
 const {r} = require("../../reddit-helper")
+const {selectRandom} = require("../../helpers");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('copypasta')
@@ -10,9 +11,11 @@ module.exports = {
 
         async function fetchData(){
             try {
-                return await r.getSubreddit('copypasta').getRandomSubmission();
+                return await r.getSubreddit('copypasta').getHot({
+                    limit: 100
+                });
             } catch(e) {
-                console.log("Metwork error:\n", e)
+                console.log("Network error:\n", e)
                 return;
             }
         }
@@ -42,7 +45,8 @@ module.exports = {
                 if (i.customId === "copypasta_confirm") {
                     collector.stop("user-confirmed")
                     await i.update({content: "Fetching...", embeds: [], components: []})
-                    const request = await fetchData()
+                    const requestHead = await fetchData()
+                    const request = selectRandom(requestHead)
                     const reqText = request.selftext;
                     const finalText = reqText.length<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
 
@@ -65,7 +69,8 @@ module.exports = {
                     nextCollector.on("collect", async res => {
                         if(res.customId==="copypasta_next") {
                             await res.deferUpdate()
-                            const request = await fetchData()
+                            const requestHead = await fetchData()
+                            const request = selectRandom(requestHead)
                             const reqText = request.selftext;
                             const finalText = reqText.length<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
                             const responseEmbed = new EmbedBuilder()

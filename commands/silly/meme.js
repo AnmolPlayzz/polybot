@@ -12,7 +12,9 @@ module.exports = {
         async function fetchData(){
             const sub = selectRandom(subs)
             try {
-                return await r.getSubreddit(sub).getRandomSubmission();
+                return await r.getSubreddit(sub).getHot({
+                    limit: 100
+                });
             } catch(e) {
                 console.log("Metwork error:\n", e)
                 return;
@@ -44,9 +46,10 @@ module.exports = {
                 if (i.customId === "meme_confirm") {
                     collector.stop("user-confirmed")
                     await i.update({content: "Fetching...", embeds: [], components: []})
-                    let request = await fetchData()
+                    const requestData = await fetchData()
+                    let request = selectRandom(requestData)
                     while(request.domain==='v.redd.it') {
-                        request=await fetchData()
+                        request=selectRandom(requestData)
                     }
 
                     const reqText = request.title;
@@ -69,9 +72,10 @@ module.exports = {
                     nextCollector.on("collect", async res => {
                         if(res.customId==="meme_next") {
                             await res.deferUpdate({content: "fetching", embeds: [], components: []})
-                            let request = await fetchData()
+                            const requestData = await fetchData()
+                            let request = selectRandom(requestData)
                             while(request.domain==='v.redd.it') {
-                                request=await fetchData()
+                                request=selectRandom(requestData)
                             }
 
                             const reqText = request.title;
