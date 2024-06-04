@@ -103,8 +103,12 @@ function calculateXp(l){
 function calculateLevel(x) {
     const sqrt = Math.sqrt;
     const level = -(((sqrt(3)*sqrt(243*x**2 + 427680*x + 188584424) - 27*x - 23760)**(1/3))/(2*3**(2/3))) + ((37)/(3**(1/3)*(sqrt(3)*sqrt(243*x**2 + 427680*x + 188584424) - 27*x - 23760)**(1/3))) - 8
-    return Math.round(level) === -1 ? 0 : Math.round(level)
-
+    let floored = Math.floor(level) === -1 ? 0 : Math.floor(level)
+    const checkXp = calculateXp(floored+1)
+    if (checkXp < x){
+        floored+=1
+    }
+    return floored;
 }
 
 function selectRandom(arr) {
