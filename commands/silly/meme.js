@@ -8,15 +8,24 @@ module.exports = {
         .setName('meme')
         .setDescription('Get a random meme from reddit.'),
     async execute(interaction, client) {
-        const subs=["memes","shitposting","dankmemes"]
-        const sub = selectRandom(subs)
+        let subs=["memes","shitposting","dankmemes"]
         async function fetchData(){
+            const sub = selectRandom(subs)
             try {
-                return await r.getSubreddit(sub).getHot({
+                const list = await r.getSubreddit(sub).getHot({
                     limit: 100
                 });
+                const listTop = await r.getSubreddit(sub).getTop({
+                    limit: 100
+                });
+                const listNew  = await r.getSubreddit(sub).getNew({
+                    limit: 100
+                });
+                const newList = [...list,...listTop,...listNew]
+                subs=subs.filter((val) => val!==sub)
+                return newList.filter((req) => req.domain !== 'v.redd.it')
             } catch(e) {
-                console.log("Metwork error:\n", e)
+                console.log("Network error:\n", e)
                 return;
             }
         }
@@ -46,12 +55,9 @@ module.exports = {
                 if (i.customId === "meme_confirm") {
                     collector.stop("user-confirmed")
                     await i.update({content: "Fetching...", embeds: [], components: []})
-                    const requestData = await fetchData()
+                    let requestData = await fetchData()
                     let request = selectRandom(requestData)
-                    while(request.domain==='v.redd.it') {
-                        request=selectRandom(requestData)
-                    }
-
+                    let currentImage=request.url
                     const reqText = request.title;
                     const finalText = reqText.length + 1<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
                     const responseEmbed = new EmbedBuilder()
@@ -65,19 +71,30 @@ module.exports = {
                         .setCustomId('meme_next')
                         .setLabel('Next')
                         .setStyle(ButtonStyle.Primary);
+                    let save = new ButtonBuilder()
+                        .setCustomId('meme_save')
+                        .setLabel('Save')
+                        .setStyle(ButtonStyle.Secondary);
                     let row = new ActionRowBuilder()
-                        .addComponents(next)
+                        .addComponents(next,save)
                     const second_rs = await i.editReply({content: "", embeds: [responseEmbed], components: [row] })
                     const nextCollector = second_rs.createMessageComponentCollector({ componentType: ComponentType.Button, time: 300_000 });
                     nextCollector.on("collect", async res => {
                         if(res.customId==="meme_next") {
-                            await res.deferUpdate({content: "fetching", embeds: [], components: []})
-                            let request = selectRandom(requestData)
-                            while(request.domain==='v.redd.it') {
-                                request=selectRandom(requestData)
+                            await res.deferUpdate({content: "Fetching...", embeds: [], components: []})
+
+                            if (requestData.length === 1 && subs.length === 0) {
+                                await res.editReply({content: "## Looks like I'm out of memes!\nThere are no more unique memes to see, you could run the command again but you will probably see the same memes over again. Run the command again in 24 hours for new content!", embeds: [], components: [] })
+                                return
+                            }
+                            if (requestData.length<=3 && subs.length>=1) {
+                                const requestDataNew = await fetchData()
+                                requestData = [...requestDataNew]
                             }
 
+                            let request = selectRandom(requestData)
                             const reqText = request.title;
+                            currentImage=request.url
                             const finalText = reqText.length + 1<=2048 ? reqText : reqText.slice(0,2001) + " ... Post is too long to fit in this embed, view full post for the complete text."
                             const responseEmbed = new EmbedBuilder()
                                 .setAuthor({name: `View Full Post`, url: request.url})
@@ -87,7 +104,23 @@ module.exports = {
                                 .setTimestamp()
                                 .setFooter({text: `👍 ${request.score}`});
                             await res.editReply({content: "", embeds: [responseEmbed], components: [row] })
+                            requestData = requestData.filter((data) => {
+                                return data.url !== request.url
+                            })
                             nextCollector.resetTimer()
+                        } else if (res.customId==="meme_save") {
+
+                            try {
+                                const dmEmbed = new EmbedBuilder()
+                                    .setTitle(`Sent from ${interaction.guild.name} using the /meme command.`)
+                                    .setColor(0x2b2d31)
+                                    .setImage(currentImage)
+                                    .setTimestamp()
+                                await res.user.send({embeds: [dmEmbed]})
+                                res.acknowledged ? await res.followUp({content: "Sent to your DMs!",ephemeral: true}) : await res.reply({content: "Sent to your DMs!",ephemeral: true})
+                            } catch(e) {
+                                res.acknowledged ? await res.followUp({content: "Could not DM you with the meme. It is likely that you have DMs disabled/you blocked the bot.",ephemeral: true}) : await res.reply({content: "Could not DM you with the meme. It is likely that you have DMs disabled/you blocked the bot.",ephemeral: true})
+                            }
                         }
                     })
                     nextCollector.on("end", async int => {
