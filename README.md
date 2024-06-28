@@ -31,15 +31,13 @@ PolyBot is an open-source Discord bot made using Discord.js v14. It is designed 
    - [x] Leaderboard
    - [x] alter cmds: add/remove rank/xp
 - [ ] Silly
-   - [ ] Hug
-   - [ ] Slap
+   - [x] Hug
+   - [x] Slap
    - [ ] Murder
    - [ ] Compliment
-   - [ ] Choke
-   - [ ] Spray (https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-tiktok-gif-25591053)
-   - [ ] Random meme
-   - [ ] Random capypasta
-   - [ ] mOcK \(right click/context menu)
+   - [x] Random meme
+   - [x] Random capypasta
+   - [x] mOcK \(right click/context menu)
    - [ ] Fun fact
    - [ ] Randomly reply to users with weird shi
 - [ ] Image - generate images from user input
@@ -48,12 +46,12 @@ PolyBot is an open-source Discord bot made using Discord.js v14. It is designed 
    - [ ] convert user msges to quote
    - [ ] /hat : give users a hat
 - [ ] Utility
-   - [ ] Unit conversion
-   - [ ] calculator w/ buttons
-   - [ ] weather
-   - [ ] Currency conversion
-   - [ ] Dictionary
-   - [ ] Web SS
+   - [x] Unit conversion
+   - [x] calculator w/ buttons
+   - [x] weather
+   - [x] AQI
+   - [x] Currency conversion
+   - [x] Web SS
    - [ ] Torrent search
 - [ ] Social alerts \[for self hosted bots]
    - [ ] YouTube

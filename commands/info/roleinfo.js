@@ -24,18 +24,5 @@ module.exports = {
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
         await interaction.reply({embeds: [roleInfo]})
-        /*
-        TODO:
-        	- name
-        	- id
-        	- color
-        	- creation date
-        	- position
-        	- hoist
-        	- number of people
-        	- icon (if there)
-        	- permissions
-
-         */
     },
 };

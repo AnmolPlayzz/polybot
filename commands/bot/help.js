@@ -51,7 +51,13 @@ module.exports = {
         const silly = new EmbedBuilder()
             .setColor(0xff9500)
             .setAuthor({ name: 'Silly Commands', iconURL: 'https://i.postimg.cc/PrWJQdTP/help-silly-author.png'})
-            .setDescription("`/hug [target]*`: Hug a user (with cute cat gifs :3).\n`/meme`: Get a random meme from reddit.\n`/copypasta`: Get a random copypasta from reddit.\n`/mock [text]*`: mOcK a given string. (Also available as **context menus**)")
+            .setDescription("`/hug [target]*`: Hug a user (with cute cat gifs :3).\n`/slap [target]*`: Slap a user (with CERTAINLY NOT cute cat gifs :3).\n`/meme`: Get a random meme from reddit.\n`/copypasta`: Get a random copypasta from reddit.\n`/mock [text]*`: mOcK a given string. (Also available as **context menus**)")
+            .setTimestamp()
+            .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
+        const utility = new EmbedBuilder()
+            .setColor(0x9e3bd4)
+            .setAuthor({ name: 'Utility Commands', iconURL: 'https://i.postimg.cc/fTkz85w1/help-utility-author.png'})
+            .setDescription("`/weather [location]*`: Get the current and forecast Weather data for a location.\n`/aqi [location]*`: Get the current AQI data for a location.\n`/unit-convert [quantity]*`: Convert a quantity from one unit to another.\n`/currency-convert [input_currency]* [output_currency]* [value]*`: Convert a money from one currency to another.\n`/calculator`: Use a button calculator inside discord.\n`/webss [url]* [wait]`: Take a screenshot of a given website.")
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
 
@@ -93,7 +99,11 @@ module.exports = {
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Silly Commands")
                     .setDescription("Commands for getting a lil freaky 👅.")
-                    .setValue("silly")
+                    .setValue("silly"),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Utility Commands")
+                    .setDescription("Commands for getting useful info about stuff.")
+                    .setValue("utility"),
             )
 
 
@@ -131,6 +141,9 @@ module.exports = {
                         await collector.resetTimer()
                     } else if (i.values[0]==="silly") {
                         await i.update({embeds: [silly], components: [mainrow], ephemeral: true});
+                        await collector.resetTimer()
+                    } else if (i.values[0]==="utility") {
+                        await i.update({embeds: [utility], components: [mainrow], ephemeral: true});
                         await collector.resetTimer()
                     }
                 }
