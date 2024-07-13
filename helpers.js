@@ -1,14 +1,11 @@
 // Helper functions
-const currency = require("./currency.json")
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, Events, ComponentType,ButtonBuilder, ButtonStyle } = require('discord.js');
 const NodeCache = require("node-cache");
 const cache = new NodeCache({ stdTTL: 60, checkperiod: 120 });
 const fetch = require("node-fetch");
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require("path");
-const latestDataQuery = currency.lastUpdate
 const APIKey = process.env.FC_API_KEY;
-
 let lastRequestTime = 0;
 
 /***
@@ -199,7 +196,31 @@ const fetchLocations = async (location) => {
     }
 };
 
+/**
+ * Fetch currency data
+ * @returns {Promise<{
+ *     lastUpdate: number,
+ *     currencyData: {
+ *       code:string,
+ *       name:string,
+ *       symbol:string,
+ *       inBase:number
+ *     }[]
+ * }>}
+ * */
+async function getCurrencyData() {
+    const rawFileContent = await fs.readFile('currency.json', { encoding: 'utf-8' });
+    return JSON.parse(rawFileContent);
+}
+
+/**
+ * Write latest currency data
+ * @returns {Promise<void>}
+ * */
 async function fetchData() {
+    const currency = await getCurrencyData()
+    const latestDataQuery = currency.lastUpdate
+
     if (new Date() - new Date(latestDataQuery) >= 86400000 ) {
         const currenciesReq = await fetch(`https://api.freecurrencyapi.com/v1/currencies?apikey=${APIKey}`)
         const currencies = await currenciesReq.json()
@@ -230,7 +251,7 @@ async function fetchData() {
         }
         const filePath = path.resolve(__dirname, './currency.json');
         console.log('Writing to file:', filePath);
-        fs.writeFileSync(filePath, JSON.stringify(fetchedData))
+        await fs.writeFile(filePath, JSON.stringify(fetchedData))
         console.log("JSON saved")
     }
 }
@@ -241,3 +262,4 @@ module.exports.calculateLevel = calculateLevel;
 module.exports.selectRandom = selectRandom;
 module.exports.fetchLocations = fetchLocations;
 module.exports.fetchData = fetchData;
+module.exports.getCurrencyData = getCurrencyData;

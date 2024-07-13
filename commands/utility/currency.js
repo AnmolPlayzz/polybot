@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const currency = require("../../currency.json")
-const { fetchData } = require("../../helpers.js")
+const { fetchData, getCurrencyData } = require("../../helpers.js")
 fetchData()
     .catch((e) => console.error(e));
 module.exports = {
@@ -23,6 +22,7 @@ module.exports = {
                 .setRequired(true)),
     async autocomplete(interaction) {
         const focusedOption = interaction.options.getFocused(true);
+        const currency = await getCurrencyData()
         let choices = currency.currencyData
         const filtered = choices.filter(choice => choice.name.toLowerCase().includes(focusedOption.value.toLowerCase()) || choice.code.toLowerCase().includes(focusedOption.value.toLowerCase()));
         await interaction.respond(
@@ -30,11 +30,16 @@ module.exports = {
         );
     },
     async execute(interaction, client) {
+        try {
+            await fetchData()
+        } catch (e) {
+            console.log(e)
+        }
         await interaction.deferReply()
-        await fetchData()
         const input = interaction.options.getString('input_currency');
         const output = interaction.options.getString('output_currency');
         const value = interaction.options.getInteger('value');
+        const currency = await getCurrencyData()
         const inValue = currency.currencyData.filter((val) => val.code === input ? val.inBase : false).pop().inBase;
         const outValue = currency.currencyData.filter((val) => val.code === output ? val.inBase : false).pop().inBase;
         const baseValue = value / inValue
