@@ -5,6 +5,7 @@ const { SlashCommandBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelect
 const { fetchLocations } = require("../../helpers.js")
 const { fetchWeatherApi } = require('openmeteo');
 const moment = require('moment-timezone');
+const QuickChart = require("quickchart-js");
 const months = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"]
 const day = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
@@ -60,6 +61,10 @@ module.exports = {
                     .setLabel("Hourly Forecast")
                     .setDescription("Get hourly forecast data for the next 7 days.")
                     .setValue("hourly"),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Graphs")
+                    .setDescription("Get graphs from forecast data for a particular day.")
+                    .setValue("graphs"),
             )
         const modeSelectorRow = new ActionRowBuilder()
             .addComponents(modeSelector)
@@ -241,6 +246,137 @@ module.exports = {
                 .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
         }
 
+        async function generateGraphEmbed(day,mode) {
+            const index = day*24;
+            let displayName;
+            const myChart = new QuickChart()
+            myChart.setBackgroundColor("rgb(23,23,23)")
+            let str_q;
+            if (mode===0) {
+                const dataset = Object.values(hourlyData.precipitationProbability).slice(index,index+24).map(data => Number(data))
+                const finalDataSet = {
+                    labels: hourArrayHourlyA,
+                    datasets: [{
+                        label: 'Probability - %',
+                        data: dataset
+                    }],
+                }
+
+                myChart.setConfig({
+                    type: 'line',
+                    data: finalDataSet
+                });
+                myChart.setWidth(840)
+                str_q = await myChart.getShortUrl()
+
+                displayName = "Precipitation Probability"
+            } else if (mode===1) {
+                const dataset = Object.values(hourlyData.precipitation).slice(index,index+24).map(data => Number(data))
+                const finalDataSet = {
+                    labels: hourArrayHourlyA,
+                    datasets: [{
+                        label: 'Amount - mm',
+                        data: dataset
+                    }]
+                }
+
+                myChart.setConfig({
+                    type: 'line',
+                    data: finalDataSet,
+                });
+                myChart.setWidth(840)
+                str_q = await myChart.getShortUrl()
+
+                displayName = "Precipitation Amount"
+            } else if(mode===2) {
+                const dataset = Object.values(hourlyData.temperature2m).slice(index,index+24).map(data => Number(data))
+                const dataset2 = Object.values(hourlyData.apparentTemperature).slice(index,index+24).map(data => Number(data))
+                const finalDataSet = {
+                    labels: hourArrayHourlyA,
+                    datasets: [{
+                        label: 'Apparent Temperature - ℃',
+                        data: dataset2
+                    },{
+                        label: 'Temperature (2m) - ℃',
+                        data: dataset
+                    }]
+                }
+
+                myChart.setConfig({
+                    type: 'line',
+                    data: finalDataSet,
+                });
+                myChart.setWidth(840)
+                str_q = await myChart.getShortUrl()
+
+                displayName = "Temperature & Apparent Temperature"
+            } else if (mode === 3) {
+                const dataset = Object.values(hourlyData.temperature2m).slice(index,index+24).map(data => Number(data))
+                const finalDataSet = {
+                    labels: hourArrayHourlyA,
+                    datasets: [{
+                        label: 'Relative Humidity - %',
+                        data: dataset
+                    }]
+                }
+
+                myChart.setConfig({
+                    type: 'line',
+                    data: finalDataSet,
+                });
+                myChart.setWidth(840)
+                str_q = await myChart.getShortUrl()
+
+                displayName = "Relative Humidity"
+            } else if (mode === 4) {
+                const dataset = Object.values(hourlyData.visibility).slice(index,index+24).map(data => Number(data))
+                const finalDataSet = {
+                    labels: hourArrayHourlyA,
+                    datasets: [{
+                        label: 'Distance - m',
+                        data: dataset
+                    }]
+                }
+
+                myChart.setConfig({
+                    type: 'line',
+                    data: finalDataSet,
+                });
+                myChart.setWidth(840)
+                str_q = await myChart.getShortUrl()
+
+                displayName = "Visibility"
+            } else if (mode === 5) {
+                const dataset = Object.values(hourlyData.uvIndex).slice(index,index+24).map(data => Number(data))
+                const finalDataSet = {
+                    labels: hourArrayHourlyA,
+                    datasets: [{
+                        label: 'UV Index',
+                        data: dataset
+                    }]
+                }
+
+                myChart.setConfig({
+                    type: 'line',
+                    data: finalDataSet,
+                });
+                myChart.setWidth(840)
+                str_q = await myChart.getShortUrl()
+
+                displayName = "UV Index"
+            }
+            console.log(str_q)
+            return new EmbedBuilder()
+                .setTitle(`Forecasts Graphs`)
+                .setColor(0x2b2d31)
+                .setDescription(`**Location:** ${location[2]}\n`+
+                    `**Latitude:** ${location[0]}\n` +
+                    `**Longitude:** ${location[1]}\n` +
+                    `**Date:** ${timeArrayHourlyA[day]}\n` +
+                    `**Graph:** ${displayName}`)
+                .setImage(str_q)
+        }
+
         const hourlyDateSelector = new StringSelectMenuBuilder()
             .setCustomId('weather__hourly__date')
             .setPlaceholder('Select date.')
@@ -257,6 +393,41 @@ module.exports = {
         let daySelected=0
         let hourSelected=0
 
+        const graphDateSelector = new StringSelectMenuBuilder()
+            .setCustomId('weather__graph__date')
+            .setPlaceholder('Select date.')
+            .addOptions(...timeArrayHourly)
+        const graphDateSelectorRow = new ActionRowBuilder()
+            .addComponents(graphDateSelector)
+
+        const graphModeSelector = new StringSelectMenuBuilder()
+            .setCustomId('weather__graph__mode')
+            .setPlaceholder('Select variable.')
+            .addOptions(
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Precipitation Probability')
+                    .setValue('0'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Precipitation Amount')
+                    .setValue('1'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Temperature & Apparent Temperature')
+                    .setValue('2'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Relative Humidity')
+                    .setValue('3'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('Visibility')
+                    .setValue('4'),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel('UV Index')
+                    .setValue('5'),
+            )
+        const graphModeSelectorRow = new ActionRowBuilder()
+            .addComponents(graphModeSelector)
+
+        let daySelectedGraph = 0
+        let modeSlectedGraph = 0
         collector.on("collect", async i => {
             if (i.user.id === interaction.user.id && i.customId === "weather_mode") {
                 collector.resetTimer()
@@ -323,6 +494,10 @@ module.exports = {
                 } else if (i.values[0] === "hourly") {
                     const embed = generateHourlyEmbed(0,0)
                     const second_rs = await i.editReply({embeds: [embed], components: [hourlyDateSelectorRow, hourlyHourSelectorRow,backButtonRow]})
+                } else if (i.values[0] === "graphs") {
+                    await i.editReply("Generating graph...")
+                    const embed = await generateGraphEmbed(daySelectedGraph,0)
+                    const second_rs = await i.editReply({content: "",embeds: [embed], components: [graphDateSelectorRow, graphModeSelectorRow,backButtonRow]})
                 }
             } else if (i.user.id===interaction.user.id && i.customId === "weather_back") {
                 await i.update({embeds: [initialEmbed], components: [modeSelectorRow]})
@@ -343,6 +518,20 @@ module.exports = {
                 hourSelected = selected
                 const embed = generateHourlyEmbed(daySelected,hourSelected)
                 await i.editReply({embeds: [embed], components: [hourlyDateSelectorRow, hourlyHourSelectorRow,backButtonRow]})
+            } else if ( i.customId==="weather__graph__date") {
+                await i.deferUpdate()
+                await i.editReply("Generating graph...")
+                const selected = Number(i.values[0])
+                daySelectedGraph=selected
+                const embed = await generateGraphEmbed(daySelectedGraph,modeSlectedGraph)
+                await i.editReply({content: "",embeds: [embed], components: [graphDateSelectorRow, graphModeSelectorRow,backButtonRow]})
+            } else if ( i.customId==="weather__graph__mode") {
+                await i.deferUpdate()
+                await i.editReply("Generating graph...")
+                const selected = Number(i.values[0])
+                modeSlectedGraph=selected
+                const embed = await generateGraphEmbed(daySelectedGraph,modeSlectedGraph)
+                await i.editReply({content: "",embeds: [embed], components: [graphDateSelectorRow, graphModeSelectorRow,backButtonRow]})
             }
         })
         collector.on("end", async i => {

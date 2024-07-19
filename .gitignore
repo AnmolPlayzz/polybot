@@ -1,6 +1,8 @@
 /node_modules
 /.obsidian
 .env
+.env.deveelopment
+.env.production
 
 /.idx
 /.vscode
