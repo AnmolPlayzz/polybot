@@ -1,5 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder} = require('discord.js');
 const puppeteer = require('puppeteer');
+const fetch = require('node-fetch');
+const {networkInterfaces} = require("node:os");
+const apiKey = process.env.WEBSS_API_KEY;
+const apiAddress = process.env.WEBSS_API_ADDRESS;
 function wait(time){
     return new Promise((resolve,reject)=>{
         setTimeout(()=>{
@@ -7,6 +11,7 @@ function wait(time){
         );
     });
 }
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('webss')
@@ -21,26 +26,29 @@ module.exports = {
                 .setName('wait')
                 .setDescription('Amount of time to wait before taking a screenshot in seconds. ')
                 .setMinValue(0)
-                .setMaxValue(60)),
+                .setMaxValue(10)),
     async execute(interaction, client) {
         await interaction.reply({content: "fetching...",ephemeral: true})
-        const waitTime = interaction.options.getInteger("wait")*1000 || 3000
+        const waitTime = interaction.options.getInteger("wait") || 1
         const url = interaction.options.getString("url")
         try {
-            const browser = await puppeteer.launch();
-            const page = await browser.newPage();
-            await page.setViewport({
-                width: 1280,
-                height: 720,
-                deviceScaleFactor: 1,
-            });
-            await page.goto(url);
-            await interaction.editReply({content: `Wait for ${waitTime / 1000} seconds...`, ephemeral: true})
-            await wait(waitTime)
-            const screenshotBuffer = await page.screenshot()
-            await browser.close();
-            console.log(url, interaction.user.username)
-            const attachment = new AttachmentBuilder(screenshotBuffer, { name: 'screenshot.png' });
+            const req  = {
+                url,
+                key: apiKey,
+                delay: waitTime
+            }
+            const response = await fetch(`https://secure.screeenly.com/api/v1/fullsize`, {
+                method: 'POST',
+                body: JSON.stringify(req),
+                headers: {
+                    "Content-type": "application/json",
+                }
+            })
+            if (!response.ok) {
+                throw new Error("error")
+            }
+            const data = await response.json()
+            const attachment = new AttachmentBuilder(data.path, { name: 'screenshot.png' });
             await interaction.editReply({
                 content: "Here's your screenshot!",
                 files: [attachment],
