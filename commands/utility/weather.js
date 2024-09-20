@@ -11,14 +11,32 @@ const months = ["January", "February", "March", "April", "May", "June",
 const day = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('weather')
-        .setDescription('Get weather data for a location.')
-        .addStringOption(option =>
-            option.setName('location')
-                .setDescription('The location to get the weather for')
-                .setRequired(true)
-                .setAutocomplete(true)),
+    data: {
+        options: [
+            {
+                choices: undefined,
+                autocomplete: true,
+                type: 3,
+                name: 'location',
+                name_localizations: undefined,
+                description: 'The location to get the weather for',
+                description_localizations: undefined,
+                required: true,
+                max_length: undefined,
+                min_length: undefined
+            }
+        ],
+        name: 'weather',
+        name_localizations: undefined,
+        description: 'Get weather data for a location.',
+        description_localizations: undefined,
+        default_permission: undefined,
+        default_member_permissions: undefined,
+        dm_permission: undefined,
+        nsfw: undefined,
+        integration_types: [0,1],
+        contexts: [0,1,2]
+    },
     async autocomplete(interaction) {
         const focusedValue = interaction.options.getFocused();
         let filtered = await fetchLocations(focusedValue);
