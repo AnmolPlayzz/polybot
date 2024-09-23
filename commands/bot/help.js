@@ -9,7 +9,7 @@ module.exports = {
         const home = new EmbedBuilder()
             .setColor(0x2B2D31)
             .setAuthor({ name: 'Welcome to the Help menu!', iconURL: 'https://i.postimg.cc/BZxMMd9Y/help-author.png'})
-            .setDescription('## Navigation\nUse the select menu to navigate through the menu.\n## Notations\n`[input]`: indicated the input field for a command.\n`[input]*`: indicates a field which is required.\n## Contributing\nIf you\'d like to report an issue or help make the bot better, head over to the [GitHub repo](https://github.com/AnmolPlayzz/polybot).\n## Website and Docs\nWill be made soon™')
+            .setDescription('## Navigation\nUse the select menu to navigate through the menu.\n## Notations\n`[input]`: indicated the input field for a command.\n`[input]*`: indicates a field which is required.\n## Contributing\nIf you\'d like to report an issue or help make the bot better, head over to the [GitHub repo](https://github.com/AnmolPlayzz/polybot).\n## Website and Dashboard\nCheck out the website [here](https://polybot-website.vercel.app).\nAccess the dashboard [here](https://polybot-dashboard.vercel.app).')
             .setTimestamp()
 			.setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
         const bot = new EmbedBuilder()
@@ -51,13 +51,13 @@ module.exports = {
         const silly = new EmbedBuilder()
             .setColor(0xff9500)
             .setAuthor({ name: 'Silly Commands', iconURL: 'https://i.postimg.cc/PrWJQdTP/help-silly-author.png'})
-            .setDescription("`/hug [target]*`: Hug a user (with cute cat gifs :3).\n`/slap [target]*`: Slap a user (with CERTAINLY NOT cute cat gifs :3).\n`/meme`: Get a random meme from reddit.\n`/copypasta`: Get a random copypasta from reddit.\n`/mock [text]*`: mOcK a given string. (Also available as **context menus**)")
+            .setDescription("`/hug [target]*`: Hug a user (with cute cat gifs :3).\n`/slap [target]*`: Slap a user (with CERTAINLY NOT cute cat gifs :3).\n`/meme`: Get a random meme from reddit.\n`/copypasta`: Get a random copypasta from reddit.\n`/mock [text]*`: mOcK a given string. (Also available as **context menus**)\n`/freaky [text]*`: Make text go a lil 𝓯𝓻𝓮𝓪𝓴𝔂. `USER COMMAND`")
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
         const utility = new EmbedBuilder()
             .setColor(0x9e3bd4)
             .setAuthor({ name: 'Utility Commands', iconURL: 'https://i.postimg.cc/fTkz85w1/help-utility-author.png'})
-            .setDescription("`/weather [location]*`: Get the current and forecast Weather data for a location.\n`/aqi [location]*`: Get the current AQI data for a location.\n`/unit-convert [quantity]*`: Convert a quantity from one unit to another.\n`/currency-convert [input_currency]* [output_currency]* [value]*`: Convert a money from one currency to another.\n`/calculator`: Use a button calculator inside discord.\n`/webss [url]* [wait]`: Take a screenshot of a given website.")
+            .setDescription("`/weather [location]*`: Get the current and forecast Weather data for a location.\n`/aqi [location]*`: Get the current AQI data for a location.\n`/unit-convert [quantity]*`: Convert a quantity from one unit to another.\n`/currency-convert [input_currency]* [output_currency]* [value]*`: Convert a money from one currency to another.\n`/calculator`: Use a button calculator inside discord.\n`/webss [url]* [wait]`: Take a screenshot of a given website.\n`/google [query]*`: Search google and post the URL. `USER COMMAND`\n`/urbandictionary [query]*`: Search urbandictionary and post the URL. `USER COMMAND`")
             .setTimestamp()
             .setFooter({ text: `Requested by ${interaction.user.tag}`, iconURL: interaction.user.avatarURL() });
 
