@@ -16,7 +16,7 @@ module.exports = {
             .setColor(target.color)
             .addFields({name: "🎗 Name", value: target.name, inline: true },
                 {name: "💳 ID", value: `${target.id}`, inline: true},
-                {name: "🎨 Color Hex", value: `#${target.color.toString(16)}`, inline: true},
+                {name: "🎨 Color Hex", value: `#${target.color != 0 ? target.color.toString(16) : "No custom color set"}`, inline: true},
                 {name: "🎖 Position", value: `${target.position}`, inline: true},
                 {name: "📅 Created on", value: "<t:"+`${target.createdTimestamp}`.slice(0,10)+":D>", inline: true},
                 {name: "🚩 Hoisted", value: `${target.hoist ? "Yes" : "No"}`, inline: true},
